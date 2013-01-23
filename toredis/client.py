@@ -1,3 +1,4 @@
+import sys
 import logging
 import socket
 
@@ -14,6 +15,11 @@ from toredis.commands import RedisCommandsMixin
 
 logger = logging.getLogger(__name__)
 
+# python 2 backwards compatibility
+if sys.version_info[0] < 3:
+    basestring = basestring
+else:
+    basestring = str
 
 class Client(RedisCommandsMixin):
     """
@@ -169,6 +175,9 @@ class Client(RedisCommandsMixin):
         resp = self.reader.gets()
 
         while resp is not False:
+            # if python3, decode strings from bytes in response list
+            if sys.version_info[0] == 3:
+                resp = [x.decode('utf-8') if isinstance(x, bytes) else x for x in resp]
             if self._sub_callback:
                 try:
                     self._sub_callback(resp)

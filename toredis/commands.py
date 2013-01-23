@@ -1,3 +1,12 @@
+import sys
+
+# python 2 backwards compatibility
+if sys.version_info[0] < 3:
+    basestring = basestring
+else:
+    basestring = str
+
+
 class RedisCommandsMixin(object):
 
     def append(self, key, value, callback=None):

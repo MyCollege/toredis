@@ -1,6 +1,8 @@
 TOREDIS
 =======
 
+Updated to support python 3.
+
 This is minimalistic, but feature rich redis client for Tornado built on top of `hiredis <https://github.com/pietern/hiredis-py>`_ protocol parser.
 
 Supports all redis commands, which are auto-generated from the redis `JSON documentation file <https://github.com/antirez/redis-doc/blob/master/commands.json>`_.

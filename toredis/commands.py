@@ -1,12 +1,3 @@
-import sys
-
-# python 2 backwards compatibility
-if sys.version_info[0] < 3:
-    basestring = basestring
-else:
-    basestring = str
-
-
 class RedisCommandsMixin(object):
 
     def append(self, key, value, callback=None):
@@ -151,6 +142,16 @@ class RedisCommandsMixin(object):
         args.append(timeout)
         self.send_message(args, callback)
 
+    def client_getname(self, callback=None):
+        """
+        Get the current connection name
+
+        Complexity
+        ----------
+        O(1)
+        """
+        self.send_message(["CLIENT GETNAME"], callback)
+
     def client_kill(self, ip_port, callback=None):
         """
         Kill the connection of a client
@@ -174,6 +175,20 @@ class RedisCommandsMixin(object):
         O(N) where N is the number of client connections
         """
         self.send_message(["CLIENT LIST"], callback)
+
+    def client_setname(self, connection_name, callback=None):
+        """
+        Set the current connection name
+
+            :param connection_name:
+
+        Complexity
+        ----------
+        O(1)
+        """
+        args = ["CLIENT SETNAME"]
+        args.append(connection_name)
+        self.send_message(args, callback)
 
     def config_get(self, parameter, callback=None):
         """

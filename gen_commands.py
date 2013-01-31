@@ -251,5 +251,15 @@ def compile_commands():
 
 if __name__ == "__main__":
     with open(os.path.join(os.path.dirname(__file__), 'toredis/commands.py'), 'w') as f:
-        f.write(get_class_source('RedisCommandsMixin'))
+        headers = """
+import sys
+
+# python 2 backwards compatibility
+if sys.version_info[0] < 3:
+    basestring = basestring
+else:
+    basestring = str
+
+"""
+        f.write(headers + get_class_source('RedisCommandsMixin'))
         print 'Generated commands.py'
